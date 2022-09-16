@@ -45,4 +45,101 @@ public class ServicePersona {
         } while (a < 10); //lo llevo al controller
         return objTraza;
     }
+
+    /******************************************************************************************************************************/
+
+    ArrayList<Persona> listaP;
+    //Constructor
+    public ServicePersona(ArrayList<Persona> listaP) {
+        this.listaP = listaP;
+    }
+
+
+    public Boolean addPersona(Persona persona){
+
+        //Implemento: //cargo los datos "Postman"con lo que viene del RequestEntity, lo guarda
+        Persona objPersona= new Persona();
+        objPersona.setNombre(persona.getNombre());
+        objPersona.setApellido(persona.getApellido());
+        objPersona.setEdad(persona.getEdad());
+        objPersona.setId(persona.getId());
+
+        //los guarda en la lista
+        listaP.add(objPersona);
+        return Boolean.TRUE; //viene hace eso y devuelve un true, para que diga que procesó
+    }
+
+    //metodo**
+    public ArrayList<Persona> listar(){
+        System.out.println("metodo listar del service");
+        return listaP;
+
+        /*Explicación
+         * cuando ejecuto llega al service "listar" a traves del controlador
+         * el controlador en línea 77 dispara el servicio
+         * de este  al metodo** "listaP"
+         * */
+    }
+
+
+    //******************METODO EMULADO (sin persistencia) PARA BUSCAR PERSONAS  "GET con parámetros"*******************************
+
+    public Persona buscarPersona(int id){
+        Persona persona =null;
+        for (Persona p:listaP
+        ) { if (p.getId()==id){
+            return p;
+        }
+
+        }
+        return persona;
+    }
+    /*Explicación
+     * llega un número id, persona lo inicializo en null
+     * va a entidad Persona si la encuentra con ese número retorna esa persona y rompe ciclo
+     * si no la encuentra retorna un null
+     * */
+
+
+    //******************METODO EMULADO (sin persistencia) PARA CREAR PERSONAS  "POST con parámetros"*******************************
+    public Boolean addPersonaCC(Persona persona, String doc){
+
+        //Implemento: //cargo los datos "Postman"con lo que viene del RequestEntity, lo guarda
+        Persona objPersona= new Persona();
+        objPersona.setNombre(persona.getNombre());
+        objPersona.setApellido(persona.getApellido());
+        objPersona.setEdad(persona.getEdad());
+        objPersona.setId(persona.getId());
+        objPersona.setDoc(persona.getDoc());
+
+        System.out.println("creo la persona con CC");
+
+        //los guarda en la lista
+        listaP.add(objPersona);
+        return Boolean.TRUE; //viene hace eso y devuelve un true, para que diga que procesó
+    }
+
+
+    public Boolean addPersonaTI(Persona persona, String doc){
+
+        //Implemento: //cargo los datos "Postman"con lo que viene del RequestEntity, lo guarda
+        Persona objPersona= new Persona();
+        objPersona.setNombre(persona.getNombre());
+        objPersona.setApellido(persona.getApellido());
+        objPersona.setEdad(persona.getEdad());
+        objPersona.setId(persona.getId());
+        objPersona.setDoc(persona.getDoc());
+
+        System.out.println("creo la persona con TI");
+        //los guarda en la lista
+        listaP.add(objPersona);
+        return Boolean.TRUE; //viene hace eso y devuelve un true, para que diga que procesó
+    }
+
+
+
+
+
+
+
 }

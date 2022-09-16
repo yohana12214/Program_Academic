@@ -28,7 +28,8 @@ public class ControllerPersona {
         alumno.setApellido("Hurtado");//2.b
         alumno.setEdad(25);
 
-        return serviceProgramaAcademico.incribirAlumno(alumno); //4. recibe  metodo incribiralumno y 5. finalmente esto es lo que recibe el we browser a traves de @getmapping
+        return serviceProgramaAcademico.incribirAlumno(alumno); //4. recibe metodo incribiralumno y 5.
+        // Finalmente esto es lo que recibe el we browser a traves de @getmapping
     }
 
 
@@ -50,18 +51,18 @@ public class ControllerPersona {
         ArrayList<String> salida = new ArrayList<>();//creacion instancia del ArrayList
         salida = serviceProgramaAcademico.doWhile(7); //cargué ejecución al objeto salida
 
-        //explicación, 2do ejemplo
+        //explicación, 2° ejemplo
         // cuando ejecuto esta ruta "/udea/doWhile" desde el explorador,
         // viene aquí, me envía el 7 a la función doWhile del service,
         //si quiero que imprima en browser debo hacer return en el controller
-        // creo un Arraylist cambio el tipo,cada vez que imprime el objeto llena  el Arraylist
+        // creo un Arraylist cambio el tipo, cada vez que imprime el objeto llena el Arraylist
         //
         return salida; //devolví o retorne el objeto
     }
-}
+
 
 /**************************************************************************************************/
-/*----------------Hasta aquí tengo 4 End Points en mi API----------------------------------------*/
+    /*----------------Hasta aquí tengo 4 End Points en mi API----------------------------------------*/
 // Función End Point: servir info hacia el request
 // API: Aplication Program Interfaz, toda la función ArrayList es una API
 // Mi API es una aplicación que presenta varias acciones
@@ -70,3 +71,85 @@ public class ControllerPersona {
 :::::::::deL protocolo HTTP para obtener esos recursos::::::::::::::::::::::::::*/
 /***************************************************************************************************/
 
+//******************METODO EMULADO (sin persistencia) PARA LISTAR PERSONAS  "GET sin parámetros"*******************************
+@GetMapping(path = "Udea/MinTic/ListarPersonas", produces = MediaType.APPLICATION_JSON_VALUE)
+public ArrayList<Persona> listarPersonas() {//arreglo tipo persona
+    //ArrayList<Persona> listaP=new ArrayList<>();//instancia de manera local, dentro del metodo, pero ya se hizo de manera gral a la clase
+    System.out.println("ingreso al método listar personas");
+    return serviceProgramaAcademico.listar(); //se delaró el array en service junto con el metodo para que retorne aquí un proceso
+}
+
+    //*************METODO EMULADO (sin persistencia) PARA INSERTAR PERSONAS "POST" sin parámetros*******************************
+    //ResponseEntity facilita el manejo con objetos, para adjudicar los estatus
+    //este metodo recibe lo que viene del Request, ver RequestBody
+
+    @PostMapping(path = "/Udea/MinTic/CrearPersona", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+// procesa y entrega info de tipo APLIC_JSON
+    public ResponseEntity<Persona> crearPersona(@RequestBody Persona persona) { //va a recibir como parametro un objeo persona que viene del Request Body
+
+        //recibe de service y lo guarda en salida
+        boolean salida = serviceProgramaAcademico.addPersona(persona);
+        if (salida == true) { //para aplicar códigos de status, retorna un 200
+            System.out.println("ingresa al controlador crear personas 200");
+            return new ResponseEntity<Persona>(persona, HttpStatus.OK);//Parametros: entidad Persona y estado
+            //disparo peticion en el postman, almacena datos en lista y me da un 200 ok
+
+        } else {
+            System.out.println("ingresa al controlador crear personas 500");
+            return new ResponseEntity("Error de Ejecución", HttpStatus.INTERNAL_SERVER_ERROR);//manipula el error retorna un 500
+        }
+
+        /* Explicacion
+         * 1. linea87 ejecuta a traves del Service, lo que captura de "persona" línea 84, se lo envio a "persona" línea 87
+         * 2. el service lo procesa, lo manipula me entrega una respuesta "salida" línea 88
+         * 3. con esa rta hago una evaluacion, si la rta es true me devuelve un 200 ok y la entidad "persona", línea 89
+         * 4. si la salida es falsa, no devuelva nada y genere un error 500 y ponga un mensajito, línea 93
+         * 5. ya tenemos CREAR PERSONA hicimos un cableado a traves del controller, ir a un service, este procesa,
+         * 6. me entrega rta y controller toma una decision
+         * */
+
+    }
+
+    //******************METODO EMULADO (sin persistencia) PARA BUSCAR PERSONAS  "GET con parámetros"*******************************
+
+    //comiunicación web solo lecturacon 2 parámetros, MediaType es homólogo a JEISON, como es get no necesita consume
+    //a traves del parámetro hago el flujo lógico buesco y encuentro
+    @GetMapping(path = "Udea/MinTic/BuscarPersona/{id}/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Persona> buscarPersonas(@PathVariable int id, @PathVariable String nombre) {
+
+        Persona p = serviceProgramaAcademico.buscarPersona(id);
+        if (p != null) {
+            System.out.println("ingresa al controlador buscar personas 200");
+            return new ResponseEntity<Persona>(p, HttpStatus.OK);
+
+        } else {
+            System.out.println("ingresa al controlador buscar personas 500");
+            return new ResponseEntity("Error de Ejecución", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+    //******************METODO EMULADO (sin persistencia) PARA CREAR PERSONAS  "POST con parámetros"*******************************
+
+    @PostMapping(path="/Udea/MinTic/CrearPersona/{doc}",produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)// procesa y entrega info de tipo APLIC_JSON
+    public ResponseEntity <Persona> crearPersonaCondicional (@RequestBody Persona persona,@PathVariable String doc) { //Crea una persona peeeero dependiendo del documento ingresado se envía a un lado u otro
+
+        //flujo de control switch case
+        switch(doc){
+            case "CC":
+                serviceProgramaAcademico.addPersonaCC(persona,doc);
+                break;
+            case"TI":
+                serviceProgramaAcademico.addPersonaTI(persona,doc);
+                break;
+            default:
+                return new ResponseEntity("Error de Ejecución",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        System.out.println("ingresa al controlador crear personas con documento");
+        return new ResponseEntity<Persona>(persona ,HttpStatus.OK);
+    }
+
+
+
+}

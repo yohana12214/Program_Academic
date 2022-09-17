@@ -136,10 +136,18 @@ public class ServicePersona {
         return Boolean.TRUE; //viene hace eso y devuelve un true, para que diga que procesó
     }
 
+    //******************METODO EMULADO (sin persistencia) PARA  PERSONAS  "POST con parámetros"*******************************
 
+    public Boolean borrarPersona (Persona persona){
+        listaP.remove(persona);
+        System.out.println("metodo remover del service");
+        return Boolean.TRUE;
 
-
-
+        /*Explicación:
+         * metodo con la variable borrarPersona
+         * de la listaP remover esa persona y retorna un true
+         *  */
+    }
 
 
 }

@@ -150,6 +150,48 @@ public ArrayList<Persona> listarPersonas() {//arreglo tipo persona
         return new ResponseEntity<Persona>(persona ,HttpStatus.OK);
     }
 
+    /*------   NEW-----metodo emulado (sin persistencia) para actualizar personas "Put con parámetros"----------------------------
+     *Formas de enviar Datos :
+     * @RequestBody: requiere un body tipo JSON, uso: POST
+     * @PathVariable o @path Param: se le debe adicionar el parámetro al path, uso:GET y POST...
+     * @RequestParam:se le adiciona al path y &
+     -*/
+    @PutMapping(path = "/Udea/MinTic/ActualizarPersona", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Persona> actualizarPersona(@RequestParam int id, @RequestParam String nombreModificado) {
+        Persona p = serviceProgramaAcademico.buscarPersona(id);
+        p.setNombre(nombreModificado);
+        System.out.println("metodo put");
+        return new ResponseEntity<Persona>(p, HttpStatus.OK);
+    }
+
+    /*------   NEW-----metodo emulado (sin persistencia) para actualizar persona parcial  "PATCH con parámetros"----------------------------*/
+    @PatchMapping(path = "/Udea/MinTic/ActualizarPP", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> actualizarPersonaParcial() {
+        String retorno = "Actualizacion parcial de dominio  Persona";
+        //aquí debe haber una implementación, por ahora así
+        System.out.println("ok, metodo patch");
+        return new ResponseEntity<String>(retorno, HttpStatus.OK);
+
+        /*Explicacion
+         * ResponseE tipo String
+         *
+         * */
+    }
+
+    @DeleteMapping(path = "/Udea/MinTic/BorrarPersona/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> borrarPersona(@PathVariable int id) {
+        Persona p = serviceProgramaAcademico.buscarPersona(id);
+        Boolean salida = serviceProgramaAcademico.borrarPersona(p);
+        System.out.println("ok, metodo Delete");
+        return new ResponseEntity<Boolean>(salida,HttpStatus.OK);
+
+        /*Explicacion
+         * para borrar persona necesito buscarla por id con @pathVariable id
+         * llamo de nuevo a la función que construí para buscar persona
+         * ahora función de borrado se la asigno a salida que es de tipo Boolean, y retorno
+         * */
+
+    }
 
 
 }

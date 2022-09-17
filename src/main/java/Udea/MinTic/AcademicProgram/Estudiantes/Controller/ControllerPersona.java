@@ -178,4 +178,20 @@ public ArrayList<Persona> listarPersonas() {//arreglo tipo persona
          * */
     }
 
+    @DeleteMapping(path = "/Udea/MinTic/BorrarPersona/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> borrarPersona(@PathVariable int id) {
+        Persona p = serviceProgramaAcademico.buscarPersona(id);
+        Boolean salida = serviceProgramaAcademico.borrarPersona(p);
+        System.out.println("ok, metodo Delete");
+        return new ResponseEntity<Boolean>(salida,HttpStatus.OK);
+
+        /*Explicacion
+         * para borrar persona necesito buscarla por id con @pathVariable id
+         * llamo de nuevo a la función que construí para buscar persona
+         * ahora función de borrado se la asigno a salida que es de tipo Boolean, y retorno
+         * */
+
+    }
+
+
 }

@@ -150,6 +150,19 @@ public ArrayList<Persona> listarPersonas() {//arreglo tipo persona
         return new ResponseEntity<Persona>(persona ,HttpStatus.OK);
     }
 
+    /*------   NEW-----metodo emulado (sin persistencia) para actualizar personas "Put con parámetros"----------------------------
+     *Formas de enviar Datos :
+     * @RequestBody: requiere un body tipo JSON, uso: POST
+     * @PathVariable o @path Param: se le debe adicionar el parámetro al path, uso:GET y POST...
+     * @RequestParam:se le adiciona al path y &
+     -*/
+    @PutMapping(path = "/Udea/MinTic/ActualizarPersona", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Persona> actualizarPersona(@RequestParam int id, @RequestParam String nombreModificado) {
+        Persona p = serviceProgramaAcademico.buscarPersona(id);
+        p.setNombre(nombreModificado);
+        System.out.println("metodo put");
+        return new ResponseEntity<Persona>(p, HttpStatus.OK);
+    }
 
 
 }

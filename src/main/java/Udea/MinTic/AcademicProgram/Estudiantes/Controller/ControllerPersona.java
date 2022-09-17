@@ -164,5 +164,18 @@ public ArrayList<Persona> listarPersonas() {//arreglo tipo persona
         return new ResponseEntity<Persona>(p, HttpStatus.OK);
     }
 
+    /*------   NEW-----metodo emulado (sin persistencia) para actualizar persona parcial  "PATCH con parámetros"----------------------------*/
+    @PatchMapping(path = "/Udea/MinTic/ActualizarPP", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> actualizarPersonaParcial() {
+        String retorno = "Actualizacion parcial de dominio  Persona";
+        //aquí debe haber una implementación, por ahora así
+        System.out.println("ok, metodo patch");
+        return new ResponseEntity<String>(retorno, HttpStatus.OK);
+
+        /*Explicacion
+         * ResponseE tipo String
+         *
+         * */
+    }
 
 }
